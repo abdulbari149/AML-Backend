@@ -17,7 +17,7 @@ plugins:
 
 functions:
   getReportSettings:
-    handler: ./src/api/getReportSettings.handler
+    handler: ./src/api/get-report-settings.handler
     name: get-report-settings
     memorySize: 128 
     timeout: 10
@@ -33,7 +33,7 @@ functions:
         Resource: !GetAtt ReportSettingsTable.Arn
   
   createReportSettings:
-    handler: ./src/api/createReportSettings.handler
+    handler: ./src/api/create-report-settings.handler
     name: create-report-settings
     memorySize: 128 
     timeout: 10
