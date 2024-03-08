@@ -52,7 +52,7 @@ resources:
     ReportSettingsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self.custom.reportSettingsTableName}
+        TableName: ${self:custom.reportSettingsTableName}
         AttributeDefinitions:
           - AttributeName: Id
             AttributeType: S
