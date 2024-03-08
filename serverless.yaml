@@ -1,0 +1,64 @@
+service: aml-backend
+
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: staging
+  region: eu-west-1
+  environment:
+    REPORT_SETTINGS_TABLE_NAME: ${self:custom.reportSettingsTableName}
+  
+custom:
+  reportSettingsTableName: report-settings-${self:provider.stage}
+
+plugins:
+  - serverless-iam-roles-per-function
+
+functions:
+  getReportSettings:
+    handler: ./src/api/getReportSettings.handler
+    name: get-report-settings
+    memorySize: 128 
+    timeout: 10
+    events:
+      - http:
+          path: /report-settings/{id}
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:GetItem"
+          - "dynamodb:Scan"
+        Resource: !GetAtt ReportSettingsTable.Arn
+  
+  createReportSettings:
+    handler: ./src/api/createReportSettings.handler
+    name: create-report-settings
+    memorySize: 128 
+    timeout: 10
+    events:
+      - http:
+          path: /report-settings
+          method: POST
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:PutItem"
+        Resource: !GetAtt ReportSettingsTable.Arn
+
+resources:
+  Resources:
+    ReportSettingsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self.custom.reportSettingsTableName}
+      AttributeDefinitions:
+        - AttributeName: Id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5

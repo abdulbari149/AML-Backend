@@ -1,0 +1,38 @@
+{
+
+  "name": "aml",
+
+  "version": "1.0.0",
+
+  "main": "index.js",
+
+  "scripts": {
+
+    "test": "echo \"Error: no test specified\" && exit 1"
+
+  },
+
+  "dependencies": {
+
+    "@aws-sdk/client-dynamodb": "^3.529.1",
+
+    "@aws-sdk/util-dynamodb": "^3.529.1",
+
+    "serverless-iam-roles-per-function": "^3.2.0",
+
+    "uuid": "^9.0.1",
+
+    "uuid-v4": "^0.1.0"
+
+  },
+
+  "keywords": [],
+
+  "author": "",
+
+  "license": "ISC",
+
+  "description": ""
+
+}
+
