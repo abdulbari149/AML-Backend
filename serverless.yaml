@@ -62,7 +62,7 @@ resources:
           - AttributeName: Id
             KeyType: HASH
           - AttributeName: userId
-            KeyType: HASH
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
