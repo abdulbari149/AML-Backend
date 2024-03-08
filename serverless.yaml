@@ -53,12 +53,12 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self.custom.reportSettingsTableName}
-      AttributeDefinitions:
-        - AttributeName: Id
-          AttributeType: S
-      KeySchema:
-        - AttributeName: Id
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+        AttributeDefinitions:
+          - AttributeName: Id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: Id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
