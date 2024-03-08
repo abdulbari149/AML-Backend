@@ -12,7 +12,7 @@ const handler = async (event) => {
 		const { id } = event.pathParameters;
 		const params = {
 			TableName: process.env.REPORT_SETTINGS_TABLE_NAME,
-			Key: marshall({ id }),
+			Key: marshall({ Id: id }),
 		};
 
 		const command = new GetItemCommand(params);
