@@ -26,7 +26,7 @@ const handler = async (event) => {
 
 		const getCommand = new GetItemCommand({
 			TableName: process.env.REPORT_SETTINGS_TABLE_NAME,
-			Key: marshall({ Id: id }),
+			Key: marshall({ Id: id, userId: body.userId }),
 		});
 
 		const output = await db.send(getCommand);
