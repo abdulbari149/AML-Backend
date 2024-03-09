@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-const { PutItemCommand } = require("@aws-sdk/client-dynamodb");
+const { PutItemCommand, GetItemCommand } = require("@aws-sdk/client-dynamodb");
 const { marshall } = require("@aws-sdk/util-dynamodb");
 const { v4: uuid, v4 } = require('uuid');
 
@@ -11,21 +11,29 @@ const handler = async (event) => {
 
 	try {
 		const body = JSON.parse(event.body);
+		const id = v4()
 		const params = {
 			TableName: process.env.REPORT_SETTINGS_TABLE_NAME,
 			Item: marshall({
-				Id: v4(),
+				Id: id,
 				...body
 			})
 		};
 
 		const command = new PutItemCommand(params);
 
-		const createResult = await db.send(command);
+		await db.send(command);
+
+		const getCommand = new GetItemCommand({
+			TableName: process.env.REPORT_SETTINGS_TABLE_NAME,
+			Key: marshall({ Id: id }),
+		});
+
+		const output = await db.send(getCommand);
 
 		response.body = JSON.stringify({
 			message: "Report settings created",
-			...createResult
+			data: output.Item,
 		});
 	} catch (error) {
 		response.statusCode = 500;
