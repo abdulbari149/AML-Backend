@@ -1,6 +1,6 @@
 const db = require('../utils/db');
 const { PutItemCommand, GetItemCommand } = require("@aws-sdk/client-dynamodb");
-const { marshall } = require("@aws-sdk/util-dynamodb");
+const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 const { v4: uuid, v4 } = require('uuid');
 
 
@@ -33,7 +33,7 @@ const handler = async (event) => {
 
 		response.body = JSON.stringify({
 			message: "Report settings created",
-			data: output.Item,
+			data: unmarshall(output.Item),
 		});
 	} catch (error) {
 		response.statusCode = 500;
