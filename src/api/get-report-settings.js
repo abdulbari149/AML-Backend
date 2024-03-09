@@ -6,7 +6,7 @@ const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 const handler = async (event) => {
 
 	try {
-		const { userId } = event.pathParameters;
+		const { id: userId } = event.pathParameters;
 		const params = {
 			TableName: process.env.REPORT_SETTINGS_TABLE_NAME, // replace with your table name
 			FilterExpression: "userId = :userId",

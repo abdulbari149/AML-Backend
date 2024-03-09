@@ -23,7 +23,7 @@ functions:
     timeout: 10
     events:
       - http:
-          path: /report-settings/{userId}
+          path: /report-settings/{id}
           method: GET
     iamRoleStatements:
       - Effect: "Allow"
