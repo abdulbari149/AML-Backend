@@ -45,6 +45,7 @@ functions:
       - Effect: "Allow"
         Action: 
           - "dynamodb:PutItem"
+          - "dynamodb:GetItem"
         Resource: !GetAtt ReportSettingsTable.Arn
 
 resources:
