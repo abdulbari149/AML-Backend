@@ -5,7 +5,6 @@ const { unmarshall } = require("@aws-sdk/util-dynamodb");
 
 const handler = async (event) => {
 	try {
-
 		const data = await db.send(new ScanCommand({
 			TableName: process.env.REPORT_SETTINGS_TABLE_NAME,
 		}));

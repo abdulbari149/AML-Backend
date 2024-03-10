@@ -1,6 +1,5 @@
-const { S3Client, PutObjectCommand, } = require("@aws-sdk/client-s3");
+const { PutObjectCommand, } = require("@aws-sdk/client-s3");
 const { v4: uuid } = require("uuid");
-const { parse } = require("csv-parse");
 const s3 = require("../utils/s3");
 
 const handler = async (event, context, callback) => {
