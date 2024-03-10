@@ -124,7 +124,7 @@ resources:
     AMLApiGatewayAuthorizer:
       Type: AWS::ApiGateway::Authorizer
       Properties:
-        AuthorizerResultTtlInSeconds: 300
+        AuthorizerResultTtlInSeconds: 10000
         IdentitySource: method.request.header.Authorization
         Name: Cognito
         RestApiId:
@@ -132,6 +132,7 @@ resources:
         Type: COGNITO_USER_POOLS
         ProviderARNs:
           - arn:aws:cognito-idp:eu-west-1:767397742563:userpool/eu-west-1_uYBV8Nsim
+        
 
     ReportSettingsTable:
       Type: AWS::DynamoDB::Table
