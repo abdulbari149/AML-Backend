@@ -25,6 +25,7 @@ functions:
       - http:
           path: /report-settings/{id}
           method: GET
+          cors: true
     iamRoleStatements:
       - Effect: "Allow"
         Action: 
@@ -41,6 +42,7 @@ functions:
       - http:
           path: /report-settings
           method: POST
+          cors: true
     iamRoleStatements:
       - Effect: "Allow"
         Action: 
