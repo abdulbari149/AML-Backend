@@ -128,7 +128,7 @@ resources:
         IdentitySource: method.request.header.Authorization
         Name: Cognito
         RestApiId:
-          Ref: ${self:provider.stage}-aml-backend
+          Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
           - arn:aws:cognito-idp:eu-west-1:767397742563:userpool/eu-west-1_uYBV8Nsim
