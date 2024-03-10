@@ -8,12 +8,30 @@ provider:
   region: eu-west-1
   environment:
     REPORT_SETTINGS_TABLE_NAME: ${self:custom.reportSettingsTableName}
+    REPORT_BUCKET_NAME: ${self:custom.reportBucketName}
   
 custom:
   reportSettingsTableName: report-settings-${self:provider.stage}
+  reportBucketName: aml-platform-bucket-${self:provider.stage}
+  dynamodb:
+    stages:
+      - staging
+    start: 
+      migrate: true
+  serverless-offline:
+    stage: staging
+    resourceRoutes: true
+  	
+  s3:
+    host: 0.0.0.0
+    port: 4002
+    directory: /tmp/serverless-s3-offline
 
 plugins:
   - serverless-iam-roles-per-function
+  - serverless-offline
+  - serverless-dynamodb
+  - serverless-s3-local
 
 functions:
   getReportSettings:
@@ -50,8 +68,51 @@ functions:
           - "dynamodb:GetItem"
         Resource: !GetAtt ReportSettingsTable.Arn
 
+  uploadReport:
+    handler: ./src/api/upload-report.handler
+    name: upload-report
+    memorySize: 128 
+    timeout: 10
+    events:
+      - http:
+          path: /report
+          method: POST
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "s3:PutObject"
+          - "s3:GetObject"
+          - "s3:ListBucket"
+          - "s3:DeleteObject"
+        Resource: 
+          - "arn:aws:s3:::${self:custom.reportBucketName}/*"
+          - "arn:aws:s3:::${self:custom.reportBucketName}"
+
+
+  list-report-settings:
+    handler: ./src/api/list-report-settings.handler
+    name: list-report-settings
+    memorySize: 128 
+    timeout: 10
+    events:
+      - http:
+          path: /report-settings
+          method: GET
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:Scan"
+        Resource: !GetAtt ReportSettingsTable.Arn
+        
 resources:
   Resources:
+    AmlPlatformBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.reportBucketName}
+
     ReportSettingsTable:
       Type: AWS::DynamoDB::Table
       Properties:
