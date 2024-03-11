@@ -100,14 +100,6 @@ functions:
           path: /report-settings
           method: GET
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS 
-            authorizerId:
-              Ref: AMLApiGatewayAuthorizer
-            scopes: # Optional - List of Oauth2 scopes when type is COGNITO_USER_POOLS
-              - email
-              - profile
-
     iamRoleStatements:
       - Effect: "Allow"
         Action: 
