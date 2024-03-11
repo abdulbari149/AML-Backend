@@ -42,8 +42,14 @@ const handler = async (event) => {
 			data: unmarshall(output.Item),
 		});
 	} catch (error) {
-		response.statusCode = 500;
-		response.body = JSON.stringify({ message: error.message });
+		let message = 'Internal server error'
+		if (error instanceof Error) {
+			message = error.message
+		}
+		return {
+			statusCode: 500,
+			body: JSON.stringify({ message }),
+		};
 	}
 
 	return response;

@@ -41,11 +41,14 @@ const handler = async (event) => {
       body: JSON.stringify(results),
     };
   } catch (error) {
-    console.log(error)
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: "Internal server error" }),
-    };
+    let message = 'Internal server error'
+		if (error instanceof Error) {
+			message = error.message
+		}
+		return {
+			statusCode: 500,
+			body: JSON.stringify({ message }),
+		};
   }
 };
 
