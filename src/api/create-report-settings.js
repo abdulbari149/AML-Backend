@@ -2,21 +2,27 @@ const db = require('../utils/db');
 const { PutItemCommand, GetItemCommand } = require("@aws-sdk/client-dynamodb");
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 const { v4: uuid, v4 } = require('uuid');
+const auth = require('../middlewares/auth');
 
 
 const handler = async (event) => {
 	const response = {
 		statusCode: 200,
 	}
-
 	try {
+		const payload = await auth(event);
+		const groups = payload['cognito:groups']
+		if (!groups.includes('Admin')) {
+			throw new Error('Not allowed to create report settings')
+		}
+
 		const body = JSON.parse(event.body);
 		const id = v4()
 		const params = {
 			TableName: process.env.REPORT_SETTINGS_TABLE_NAME,
 			Item: marshall({
 				Id: id,
-				...body
+				...body,
 			})
 		};
 

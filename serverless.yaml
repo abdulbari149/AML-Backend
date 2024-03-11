@@ -1,5 +1,5 @@
 service: aml-backend
-
+useDotenv: true
 
 provider:
   name: aws
@@ -9,10 +9,12 @@ provider:
   environment:
     REPORT_SETTINGS_TABLE_NAME: ${self:custom.reportSettingsTableName}
     REPORT_BUCKET_NAME: ${self:custom.reportBucketName}
+    COGNITO_POOL_ID: ${env:COGNITO_POOL_ID}
   
 custom:
   reportSettingsTableName: report-settings-${self:provider.stage}
   reportBucketName: aml-platform-bucket-${self:provider.stage}
+  
   dynamodb:
     stages:
       - staging
@@ -32,6 +34,7 @@ plugins:
   - serverless-offline
   - serverless-dynamodb
   - serverless-s3-local
+  - serverless-dotenv-plugin
 
 functions:
   getReportSettings:
