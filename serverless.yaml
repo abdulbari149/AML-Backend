@@ -93,7 +93,7 @@ functions:
           - "arn:aws:s3:::${self:custom.reportBucketName}"
 
 
-  listReportSettings:
+  list-report-settings:
     handler: ./src/api/list-report-settings.handler
     name: list-report-settings
     memorySize: 128 
