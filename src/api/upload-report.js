@@ -8,7 +8,7 @@ const handler = async (event, context, callback) => {
 		const payload = await auth(event)
 		const username = payload['preferred_username']
 		const groups = payload['cognito:groups']
-		
+
 		if (!groups.includes('Banks')) {
 			throw new Error('Only user can upload files')
 		}

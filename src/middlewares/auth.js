@@ -1,14 +1,26 @@
+const { DescribeKinesisStreamingDestinationCommand } = require("@aws-sdk/client-dynamodb");
 const verifyToken = require("../utils/verifyToken");
 
 const auth = async (event) => {
   const token = event.headers["Authorization"];
-  if (token === "") {
-    throw new Error("Unauthorized");
+  const UnauthorizedError = new Error('Unauthorized')
+  if (!token || token === "") {
+    throw UnauthorizedError
   }
 
-  const [baerer, jwtToken] = token.split(" ");
-  if (baerer !== "Bearer" || jwtToken === "") {
-    throw new Error("Unauthorized");
+
+
+  const parts = token.split(" ");
+
+  if (parts.length === 0) {
+    throw UnauthorizedError
+  }
+
+
+  const [bearer, jwtToken] = parts;
+
+  if (bearer !== "Bearer" || jwtToken === "") {
+    throw UnauthorizedError
   }
 
   const promise = new Promise((resolve, reject) => {
