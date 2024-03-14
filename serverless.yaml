@@ -23,7 +23,6 @@ custom:
   serverless-offline:
     stage: staging
     resourceRoutes: true
-  	
   s3:
     host: 0.0.0.0
     port: 4002
@@ -140,8 +139,25 @@ functions:
         Action: 
           - "dynamodb:UpdateItem"
         Resource: !GetAtt ReportSettingsTable.Arn
-
-
+  
+  updateCriteria:
+    handler: ./src/api/update-criteria.handler
+    name: update-criteria
+    memorySize: 128 
+    timeout: 10
+    events:
+      - http:
+          path: /report-settings/{id}/criteria
+          method: PUT
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:GetItem"
+          - "dynamodb:UpdateItem"
+        Resource: !GetAtt ReportSettingsTable.Arn
+      
+      
 resources:
   Resources:
     AmlPlatformBucket:

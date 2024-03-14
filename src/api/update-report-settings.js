@@ -40,9 +40,12 @@ const handler = async (event) => {
         Id: id,
         userId: userId,
       }),
-      UpdateExpression: `set ${UpdateExpression}`,
+      UpdateExpression: `set ${UpdateExpression}, UpdatedAt = :UpdatedAt`,
       ReturnValues: "ALL_NEW",
-      ExpressionAttributeValues: marshall(attributeValues),
+      ExpressionAttributeValues: marshall({
+        ...attributeValues,
+        ":UpdatedAt": new Date().toISOString(),
+      }),
     };
 
     const updateItemCommand = new UpdateItemCommand(params);

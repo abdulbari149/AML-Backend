@@ -22,6 +22,8 @@ const handler = async (event) => {
       Item: marshall({
         Id: id,
         ...body,
+        CreatedAt: new Date().toISOString(),
+        UpdatedAt: new Date().toISOString(),
       }),
     };
 
