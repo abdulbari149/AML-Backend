@@ -104,7 +104,7 @@ functions:
           cors: 
             origin: '*' # allow requests from all origins
             headers: '*' # allow all headers
-            allowCredentials: false
+            allowCredentials: true
     iamRoleStatements:
       - Effect: "Allow"
         Action: 
