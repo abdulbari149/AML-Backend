@@ -3,6 +3,15 @@ const auth = require('../middlewares/auth')
 const { UpdateItemCommand, GetItemCommand } = require('@aws-sdk/client-dynamodb');
 const { marshall, unmarshall } = require('@aws-sdk/util-dynamodb');
 
+const headers =    {
+  'Access-Control-Allow-Origin': '*', // or specific origin
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Credentials': true, // if using credentials
+  'Access-Control-Max-Age': '86400', // 24 hours
+  // Optionally, you can expose additional headers:
+  // 'Access-Control-Expose-Headers': 'X-Custom-Header'
+}
 const handler = async (event) => {
   try {
     const payload = await auth(event)
@@ -31,7 +40,8 @@ const handler = async (event) => {
     if (!Item) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: `Report settings with id ${id} not found` })
+        body: JSON.stringify({ message: `Report settings with id ${id} not found` }),
+        headers
       }
     }
 
@@ -54,7 +64,8 @@ const handler = async (event) => {
     const updatedCriteria = unmarshall(Attributes)
     return {
       statusCode: 200,
-      body: JSON.stringify(updatedCriteria)
+      body: JSON.stringify(updatedCriteria),
+      headers
     }
   } catch (error) {
     let message = 'Internal server error'
@@ -64,6 +75,7 @@ const handler = async (event) => {
     return {
       statusCode: 500,
       body: JSON.stringify({ message }),
+      headerss
     };
   }
 }

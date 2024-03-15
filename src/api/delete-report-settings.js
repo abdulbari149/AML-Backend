@@ -3,6 +3,16 @@ const auth = require("../middlewares/auth");
 const db = require("../utils/db");
 const { DeleteItemCommand } = require('@aws-sdk/client-dynamodb')
 
+const headers =    {
+  'Access-Control-Allow-Origin': '*', // or specific origin
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Credentials': true, // if using credentials
+  'Access-Control-Max-Age': '86400', // 24 hours
+  // Optionally, you can expose additional headers:
+  // 'Access-Control-Expose-Headers': 'X-Custom-Header'
+}
+
 const handler = async (event) => {
 	try {
 		const payload = await auth(event)
@@ -31,6 +41,7 @@ const handler = async (event) => {
 		return {
 			statusCode: 200,
 			body: JSON.stringify({ message: "Report settings deleted" }),
+			headers,
 		};
 	} catch (error) {
 		let message = "Internal server error";
@@ -40,6 +51,7 @@ const handler = async (event) => {
 		return {
 			statusCode: 500,
 			body: JSON.stringify({ message }),
+			headers,
 		};
 	}
 };
