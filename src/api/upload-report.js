@@ -42,7 +42,14 @@ const handler = async (event, context, callback) => {
 			return s3.send(command);
 		});
 
-		await Promise.allSettled(promises);
+		const responses = await Promise.allSettled(promises);
+
+		const errors = responses.filter((response) => response.status === "rejected");
+		if (errors.length > 0) {
+			throw new Error("Failed to upload files");
+		}
+
+		
 
 		return {
 			statusCode: 200,
