@@ -2,14 +2,14 @@ const { PutObjectCommand, } = require("@aws-sdk/client-s3");
 const { v4: uuid } = require("uuid");
 const s3 = require("../utils/s3");
 const auth = require("../middlewares/auth");
-const headers =    {
-  'Access-Control-Allow-Origin': '*', // or specific origin
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Allow-Credentials': true, // if using credentials
-  'Access-Control-Max-Age': '86400', // 24 hours
-  // Optionally, you can expose additional headers:
-  // 'Access-Control-Expose-Headers': 'X-Custom-Header'
+const headers = {
+	'Access-Control-Allow-Origin': '*', // or specific origin
+	'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+	'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+	'Access-Control-Allow-Credentials': true, // if using credentials
+	'Access-Control-Max-Age': '86400', // 24 hours
+	// Optionally, you can expose additional headers:
+	// 'Access-Control-Expose-Headers': 'X-Custom-Header'
 }
 
 const handler = async (event, context, callback) => {
@@ -28,7 +28,7 @@ const handler = async (event, context, callback) => {
 
 		const datetime = new Date();
 
-		const key = `data/${userId}/${datetime.getFullYear()}/${datetime.getMonth()}/${datetime.getDate()}/${uuid()}@${Date.now()}.csv`
+		const key = `data/${userId}/${datetime.getFullYear()}/${(datetime.getMonth() + 1).toString().padStart(2, '0')}/${datetime.getDate().toString().padStart(2, '0')}/${uuid()}@${Date.now()}.csv`
 
 		const promises = body.files.map((file) => {
 			const buffer = Buffer.from(file, "base64");
@@ -46,10 +46,11 @@ const handler = async (event, context, callback) => {
 
 		const errors = responses.filter((response) => response.status === "rejected");
 		if (errors.length > 0) {
-			throw new Error("Failed to upload files");
+			const error = errors[0].reason;
+			throw error;
 		}
 
-		
+
 
 		return {
 			statusCode: 200,
