@@ -101,7 +101,10 @@ functions:
       - http:
           path: /report-settings
           method: GET
-          cors: true
+          cors: 
+            origin: '*' # allow requests from all origins
+            headers: '*' # allow all headers
+            allowCredentials: false
     iamRoleStatements:
       - Effect: "Allow"
         Action: 
