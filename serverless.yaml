@@ -13,7 +13,7 @@ provider:
   
 custom:
   reportSettingsTableName: report-settings-${self:provider.stage}
-  reportBucketName: aml-platform-bucket-${self:provider.stage}
+  reportBucketName: aml-platform-bucket
   
   dynamodb:
     stages:
@@ -88,8 +88,8 @@ functions:
           - "s3:ListBucket"
           - "s3:DeleteObject"
         Resource: 
-          - "arn:aws:s3:::${self:custom.reportBucketName}/*"
-          - "arn:aws:s3:::${self:custom.reportBucketName}"
+          - "arn:aws:s3:::aml-platform-bucket/*"
+          - "arn:aws:s3:::aml-platform-bucket"
 
 
   list-report-settings:
@@ -163,11 +163,6 @@ functions:
       
 resources:
   Resources:
-    AmlPlatformBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.reportBucketName}
-            	
     AMLApiGatewayAuthorizer:
       Type: AWS::ApiGateway::Authorizer
       Properties:

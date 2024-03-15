@@ -26,6 +26,11 @@ const handler = async (event) => {
     }
 
     const body = JSON.parse(event.body);
+    
+    if (body.platform?.toLowerCase() === 'scion') {
+      body.minor = 15;
+    }
+    
     const id = v4();
     const params = {
       TableName: process.env.REPORT_SETTINGS_TABLE_NAME,

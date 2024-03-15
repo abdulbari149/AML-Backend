@@ -16,6 +16,7 @@ const handler = async (event, context, callback) => {
 	try {
 		const payload = await auth(event)
 		const username = payload['preferred_username']
+		const userId = payload['cognito:username']
 		const groups = payload['cognito:groups']
 
 		if (!groups.includes('Banks')) {
@@ -27,7 +28,7 @@ const handler = async (event, context, callback) => {
 
 		const datetime = new Date();
 
-		const key = `source/${username}/${datetime.getMonth() + 1}-${datetime.getFullYear()}/${uuid()}.csv`
+		const key = `data/${userId}/${datetime.getFullYear()}/${datetime.getMonth()}/${datetime.getDate()}/${uuid()}@${Date.now()}.csv`
 
 		const promises = body.files.map((file) => {
 			const buffer = Buffer.from(file, "base64");
