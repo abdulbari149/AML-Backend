@@ -28,7 +28,11 @@ const handler = async (event, context, callback) => {
 
 		const datetime = new Date();
 
-		const key = `data/${userId}/${datetime.getFullYear()}/${(datetime.getMonth() + 1).toString().padStart(2, '0')}/${datetime.getDate().toString().padStart(2, '0')}/${uuid()}@${Date.now()}.csv`
+		const year = datetime.getFullYear();
+		const month = (datetime.getMonth() + 1).toString().padStart(2, '0');
+		const day = datetime.getDate().toString().padStart(2, '0');
+		const hour = datetime.getHours().toString().padStart(2, '0');
+		const key = `data/${userId}/${year}/${month}/${day}/${hour}/${uuid()}@${Date.now()}.csv`
 
 		const promises = body.files.map((file) => {
 			const buffer = Buffer.from(file, "base64");
