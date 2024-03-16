@@ -160,7 +160,27 @@ functions:
           - "dynamodb:UpdateItem"
         Resource: !GetAtt ReportSettingsTable.Arn
       
-      
+  uploadBankImage:
+    handler: ./src/api/upload-bank-image.handler
+    name: upload-bank-image
+    memorySize: 128 
+    timeout: 10
+    events:
+      - http:
+          path: /bank-image
+          method: POST
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "s3:PutObject"
+          - "s3:GetObject"
+          - "s3:ListBucket"
+          - "s3:DeleteObject"
+        Resource: 
+          - "arn:aws:s3:::alm-platform-bucket/*"
+          - "arn:aws:s3:::alm-platform-bucket"  
+
 resources:
   Resources:
     AMLApiGatewayAuthorizer:
