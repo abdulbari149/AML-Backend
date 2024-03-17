@@ -195,6 +195,7 @@ functions:
       - Effect: "Allow"
         Action: 
           - "s3:GetObject"
+          - "s3:ListBucket"
         Resource: 
           - "arn:aws:s3:::alm-platform-bucket/*"
           - "arn:aws:s3:::alm-platform-bucket"
