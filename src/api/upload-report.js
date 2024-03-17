@@ -26,16 +26,23 @@ const handler = async (event, context, callback) => {
 		const body = JSON.parse(event.body);
 		body.files = body.files || [];
 
+		if (body.files.length === 0) {
+			throw new Error("No files to upload");
+		}
+
 		const datetime = new Date();
 
 		const year = datetime.getFullYear();
 		const month = (datetime.getMonth() + 1).toString().padStart(2, '0');
 		const day = datetime.getDate().toString().padStart(2, '0');
 		const hour = datetime.getHours().toString().padStart(2, '0');
-		const key = `data/${userId}/${year}/${month}/${day}/${hour}/${uuid()}@${Date.now()}.csv`
 
 		const promises = body.files.map((file) => {
-			const buffer = Buffer.from(file, "base64");
+			const fileName = `${file.tag}_${uuid()}_${Date.now()}.csv`
+			const key = `data/${userId}/${year}/${month}/${day}/${hour}/${fileName}`
+
+			const buffer = Buffer.from(file.uri, "base64");
+
 			const params = {
 				Bucket: process.env.REPORT_BUCKET_NAME,
 				Key: key,
