@@ -181,6 +181,24 @@ functions:
           - "arn:aws:s3:::alm-platform-bucket/*"
           - "arn:aws:s3:::alm-platform-bucket"  
 
+  getBankImage:
+    handler: ./src/api/get-bank-image.handler
+    name: get-bank-image
+    memorySize: 128 
+    timeout: 10
+    events:
+      - http:
+          path: /bank-image
+          method: GET
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "s3:GetObject"
+        Resource: 
+          - "arn:aws:s3:::alm-platform-bucket/*"
+          - "arn:aws:s3:::alm-platform-bucket"
+
 resources:
   Resources:
     AMLApiGatewayAuthorizer:
